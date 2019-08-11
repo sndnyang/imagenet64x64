@@ -203,20 +203,24 @@ def main_worker(gpu, ngpus_per_node, args):
         validate(val_loader, model, criterion, args)
         return
 
+    begin = time.time()
     for epoch in range(args.start_epoch, args.epochs):
         if args.distributed:
             train_sampler.set_epoch(epoch)
         adjust_learning_rate(optimizer, epoch, args)
 
+        epoch_begin = time.time()
         # train for one epoch
         train(train_loader, model, criterion, optimizer, epoch, args)
 
         # evaluate on validation set
         acc1 = validate(val_loader, model, criterion, args)
+        epoch_end = time.time()
 
         # remember best acc@1 and save checkpoint
         is_best = acc1 > best_acc1
         best_acc1 = max(acc1, best_acc1)
+        print("epoch %d, time %.2f" % (epoch, epoch_end - epoch_begin))
 
         if not args.multiprocessing_distributed or (args.multiprocessing_distributed
                                                     and args.rank % ngpus_per_node == 0):
@@ -227,6 +231,7 @@ def main_worker(gpu, ngpus_per_node, args):
                 'best_acc1': best_acc1,
                 'optimizer': optimizer.state_dict(),
             }, is_best)
+    print("num epoch %d, time %.2f" % (args.epochs, epoch_end - begin))
 
 
 def train(train_loader, model, criterion, optimizer, epoch, args):
@@ -248,7 +253,7 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
         # measure data loading time
         data_time.update(time.time() - end)
 
-        if i < 10: print(images.shape)
+        if i < 3: print(images.shape)
         if args.gpu is not None:
             images = images.cuda(args.gpu, non_blocking=True)
         target = target.cuda(args.gpu, non_blocking=True)
