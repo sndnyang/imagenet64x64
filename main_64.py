@@ -17,10 +17,11 @@ import torch.utils.data.distributed
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
+from wideresnet import WideResNet
 
 model_names = sorted(name for name in models.__dict__
                      if name.islower() and not name.startswith("__")
-                     and callable(models.__dict__[name]))
+                     and callable(models.__dict__[name])) + ['wrn']
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 parser.add_argument('data', metavar='DIR', help='path to dataset')
@@ -50,6 +51,9 @@ parser.add_argument('--multiprocessing-distributed', action='store_true',
                          'N processes per node, which has N GPUs. This is the '
                          'fastest way to use PyTorch for either single node or '
                          'multi node data parallel training')
+parser.add_argument('-depth', default=28, type=int, metavar='N', help='depth for WideResNet (default: 28)')
+parser.add_argument('-k', default=2, type=float, metavar='N', help='wide factor rate for WideResNet, 0.5, 1, 2 ... 10 (default: 2)')
+parser.add_argument('-drop', default=0.3, type=float, metavar='N', help='dropout rate for WideResNet (default: 0.3)')
 
 best_acc1 = 0
 
@@ -106,7 +110,12 @@ def main_worker(gpu, ngpus_per_node, args):
         dist.init_process_group(backend=args.dist_backend, init_method=args.dist_url,
                                 world_size=args.world_size, rank=args.rank)
     # create model
-    if args.pretrained:
+    if args.arch == 'wrn':
+        num_classes = 1000
+        size = 64
+        config = [args.depth, args.k, args.drop, num_classes, size]
+        model = WideResNet(config)
+    elif args.pretrained:
         print("=> using pre-trained model '{}'".format(args.arch))
         model = models.__dict__[args.arch](pretrained=True)
     else:
@@ -230,7 +239,7 @@ def main_worker(gpu, ngpus_per_node, args):
                 'state_dict': model.state_dict(),
                 'best_acc1': best_acc1,
                 'optimizer': optimizer.state_dict(),
-            }, is_best)
+            }, is_best, filename="%s.pth.tar" % args.arch)
     print("num epoch %d, time %.2f" % (args.epochs, epoch_end - begin))
 
 

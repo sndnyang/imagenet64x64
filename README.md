@@ -16,11 +16,13 @@ The size of compressed file is GB. I split them into 11 files and upload to Baid
 
 Wait a minute.
 
-[imagenet64 baidu]()
+[imagenet64 baidu](https://pan.baidu.com/s/1zjDMT14st8Ih4fqpIGbgXw)
 
 ## The training code
 
 Then I use the code from PyTorch offical examples [imagenet](https://github.com/pytorch/examples/tree/master/imagenet) to train on the dataset.
+
+Note: train_imagenet_64.py doesn't work...Slow and wrong accuracy computating.
 
 ```bash
 python main.py -a resnet18 [imagenet-folder with train and val folders]
@@ -28,15 +30,28 @@ python main.py -a resnet18 [imagenet-folder with train and val folders]
 
 The results(use the default configuration) are coming:
 
-| network   | GPU:0 | per epoch    | top1 accuracy(%) | top5 accuracy(%) |
-|:---------:|:-----:|:------------:|:----------------:|:----------------:|
-| resnet 18 | 1.50G | 3 min 10 sec |         -    |         -    |
-| resnet 50 | 3.20G | 6 min 10 sec |         -    |         -    |
+| network            | GPU:0 | per epoch    | top1 accuracy(%) | top5 accuracy(%) |
+|:------------------:|:-----:|:------------:|:----------------:|:----------------:|
+| resnet 18          | 1.50G | 3 min 10 sec |       42.96      |        67.72     |
+| resnet 50          | 3.20G | 6 min 10 sec |       51.96      |        75.95     |
+| WRN-28-2,drop 0.3  | 8.72G | 23min 55 sec |       ...        |        ...       |
 
+### Wide ResNet
+
+The model is from [wide resnet](https://github.com/meliketoy/wide-resnet.pytorch) which gets more stars than the official repo. When will the PyTorch team add WideResNet into torchvision.models?
+
+And I changed it a bit following the implementation of the imagenet64x64 authors [WRN imagenet](https://github.com/PatrykChrabaszcz/Imagenet32_Scripts/blob/master/WRNs_imagenet.py)
 
 ## Decompress code
 
-I also upload the ipynb code about how to load the batch data and save to images. It requires numpy and imageio.
+I also upload the ipynb code about how to load the batch data and save to images.
+
+上传了notebook代码， 32x32, 16x16的数据就不弄了。
+
+```
+numpy
+imageio
+```
 
 The main functions if from the authors. [load batch data](https://github.com/PatrykChrabaszcz/Imagenet32_Scripts/blob/master/WRNs_imagenet.py)
 
