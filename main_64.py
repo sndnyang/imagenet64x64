@@ -17,6 +17,8 @@ import torch.utils.data.distributed
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
+from tqdm import tqdm, trange
+
 from wideresnet import WideResNet
 
 model_names = sorted(name for name in models.__dict__
@@ -52,7 +54,7 @@ parser.add_argument('--multiprocessing-distributed', action='store_true',
                          'fastest way to use PyTorch for either single node or '
                          'multi node data parallel training')
 parser.add_argument('-depth', default=28, type=int, metavar='N', help='depth for WideResNet (default: 28)')
-parser.add_argument('-k', default=2, type=float, metavar='N', help='wide factor rate for WideResNet, 0.5, 1, 2 ... 10 (default: 2)')
+parser.add_argument('--k', default=2, type=float, metavar='N', help='wide factor rate for WideResNet, 0.5, 1, 2 ... 10 (default: 2)')
 parser.add_argument('-drop', default=0.3, type=float, metavar='N', help='dropout rate for WideResNet (default: 0.3)')
 
 best_acc1 = 0
@@ -175,13 +177,16 @@ def main_worker(gpu, ngpus_per_node, args):
         else:
             print("=> no checkpoint found at '{}'".format(args.resume))
 
+    scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, [50, 65, 75], gamma=0.1)
     cudnn.benchmark = True
 
     # Data loading code
     traindir = os.path.join(args.data, 'train')
     valdir = os.path.join(args.data, 'val')
-    normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                     std=[0.229, 0.224, 0.225])
+    # normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+    #                                  std=[0.229, 0.224, 0.225])
+    normalize = transforms.Normalize(mean=[0.482, 0.458, 0.408],
+                                     std=[0.269, 0.261, 0.276])
 
     train_dataset = datasets.ImageFolder(
         traindir,
@@ -213,10 +218,11 @@ def main_worker(gpu, ngpus_per_node, args):
         return
 
     begin = time.time()
-    for epoch in range(args.start_epoch, args.epochs):
+    for epoch in trange(args.start_epoch, args.epochs):
         if args.distributed:
             train_sampler.set_epoch(epoch)
-        adjust_learning_rate(optimizer, epoch, args)
+        # adjust_learning_rate(optimizer, epoch, args)
+        scheduler.step()
 
         epoch_begin = time.time()
         # train for one epoch
@@ -233,13 +239,16 @@ def main_worker(gpu, ngpus_per_node, args):
 
         if not args.multiprocessing_distributed or (args.multiprocessing_distributed
                                                     and args.rank % ngpus_per_node == 0):
+            fname = "%s.pth.tar" % args.arch
+            if args.arch == "wrn":
+                fname = "%s-%d-%s.pth.tar" % (args.arch, args.depth, str(args.k))
             save_checkpoint({
                 'epoch': epoch + 1,
                 'arch': args.arch,
                 'state_dict': model.state_dict(),
                 'best_acc1': best_acc1,
                 'optimizer': optimizer.state_dict(),
-            }, is_best, filename="%s.pth.tar" % args.arch)
+            }, is_best, filename=fname)
     print("num epoch %d, time %.2f" % (args.epochs, epoch_end - begin))
 
 
@@ -258,11 +267,11 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
     model.train()
 
     end = time.time()
-    for i, (images, target) in enumerate(train_loader):
+    for i, (images, target) in enumerate(tqdm(train_loader)):
         # measure data loading time
         data_time.update(time.time() - end)
 
-        if i < 3: print(images.shape)
+        if i < 1: print(images.shape)
         if args.gpu is not None:
             images = images.cuda(args.gpu, non_blocking=True)
         target = target.cuda(args.gpu, non_blocking=True)
@@ -285,9 +294,8 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
         # measure elapsed time
         batch_time.update(time.time() - end)
         end = time.time()
-
-        if i % args.print_freq == 0:
-            progress.display(i)
+        # if i % args.print_freq == 0:
+        #     progress.display(i)
 
 
 def validate(val_loader, model, criterion, args):
@@ -323,13 +331,11 @@ def validate(val_loader, model, criterion, args):
             # measure elapsed time
             batch_time.update(time.time() - end)
             end = time.time()
-
-            if i % args.print_freq == 0:
-                progress.display(i)
+            # if i % args.print_freq == 0:
+            #     progress.display(i)
 
         # TODO: this should also be done with the ProgressMeter
-        print(' * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}'
-              .format(top1=top1, top5=top5))
+        print(' * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}'.format(top1=top1, top5=top5))
 
     return top1.avg
 
@@ -382,8 +388,8 @@ class ProgressMeter(object):
 
 
 def adjust_learning_rate(optimizer, epoch, args):
-    """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
-    lr = args.lr * (0.1 ** (epoch // 30))
+    """Sets the learning rate to the initial LR decayed by 10 every args.decay_step epochs"""
+    lr = args.lr * (0.1 ** (epoch // args.decay_step))
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
 
