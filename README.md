@@ -10,13 +10,11 @@ So I decompress the set of 64x64 into png files like the *imagenet*, and we can 
 
 ### The link to the dataset
 
-The size of compressed file is GB. I split them into 11 files and upload to Baidu Cloud Storage(I only know this one is free with > 10GB space). But I'm not sure the speed to download them.....
-
-文件比较大， 10.6G， 我就分成了11份上传到百度上——我只知道这个提供10G以上的免费空间， 也懒得找了， 虽然我知道百度下载速度是个悲剧。。。
-
-Wait a minute.
-
 [imagenet64 baidu](https://pan.baidu.com/s/1zjDMT14st8Ih4fqpIGbgXw)
+
+or
+
+[google drive](https://drive.google.com/file/d/1GpGEiuBjQ-pDKdXpfimfHAHT316xkLHc/view?usp=sharing)
 
 ## The training code
 
