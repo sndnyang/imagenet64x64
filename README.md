@@ -36,7 +36,7 @@ The results(use the default configuration) are coming:
 | resnet 50            | 3.20G |  6 min 10 sec |    90  |       51.96      |        75.95     |
 | WRN-36-2,drop 0.3    | 8.72G |  23 min 55 sec|    40  |       ...        |        ...       |
 | WRN-36-0.5,drop 0.3  | 2.91G |  9 min 28 sec |    40  |       W          |        W         |
-| WRN-28-2,drop 0      | 2.71G |  24 min 1 sec |    40  |       W          |        W         |
+| WRN-28-2,drop 0      | 2.71G |  23 min 46 sec|    40  |       60.02      |        83.04     |
 
 Use the default epochs from [resnet imagenet](https://github.com/pytorch/examples/tree/master/imagenet) and [wide resnet imagenet64x64](https://github.com/meliketoy/wide-resnet.pytorch)
 
