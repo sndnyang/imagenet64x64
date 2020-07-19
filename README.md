@@ -26,7 +26,10 @@ pip install torch==1.3.1 torchvision==0.4.2 tqdm
 ```bash
 python main.py -a resnet18 [imagenet-folder with train and val folders]
 ```
-
+wideresnet
+···bash
+CUDA_VISIBLE_DEVICES=3 python main_64.py -a wrn -depth 28 --k 2 -drop 0 -b 64  /shared/imagenet64png --epochs 40 --decay_epochs 25 35
+···
 
 The results(use the default configuration) are coming:
 
@@ -34,8 +37,6 @@ The results(use the default configuration) are coming:
 |:--------------------:|:-----:|:-------------:|:------:|:----------------:|:----------------:|
 | resnet 18            | 1.50G |  3 min 10 sec |    90  |       42.96      |        67.72     |
 | resnet 50            | 3.20G |  6 min 10 sec |    90  |       51.96      |        75.95     |
-| WRN-36-2,drop 0.3    | 8.72G |  23 min 55 sec|    40  |       ...        |        ...       |
-| WRN-36-0.5,drop 0.3  | 2.91G |  9 min 28 sec |    40  |       W          |        W         |
 | WRN-28-2,drop 0      | 2.71G |  23 min 46 sec|    40  |       60.02      |        83.04     |
 
 Use the default epochs from [resnet imagenet](https://github.com/pytorch/examples/tree/master/imagenet) and [wide resnet imagenet64x64](https://github.com/meliketoy/wide-resnet.pytorch)
