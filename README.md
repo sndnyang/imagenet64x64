@@ -42,10 +42,10 @@ The results(use the default configuration) are coming:
 
 TITAN RTX, imagenet32
 
-| network              | Memory | epoch |  per epoch    | speed | total time | top1 accuracy(%) | top5 accuracy(%) |
-|:--------------------:|:------:|:-----:|:-------------:|:-----:|:----------:|:----------------:|:----------------:|
-| resnet 50            | 1717MiB / 24220MiB | 90 | 03:52 | 21.57it/s | 5:50:19 ｜ 38.056 | 62.386 |
-| WRN-28-2,drop 0      | 2601MiB / 24220MiB | 40 | 05:17 | 15.78it/s | 3:49:15 ｜ 46.606 | 71.806 |
+| network              | Memory  | epoch |  per epoch    | speed     | total time | top1 accuracy(%) | top5 accuracy(%) |
+|:--------------------:|:-------:|:-----:|:-------------:|:---------:|:----------:|:----------------:|:----------------:|
+| resnet 50            | 1717MiB | 90    |    03:52      | 21.57it/s | 6:09:35    | 38.056 | 62.386 |
+| WRN-28-2,drop 0      | 2601MiB | 40    |    05:17      | 15.78it/s | 3:49:15    | 46.606 | 71.806 |
 
 Use the default epochs from [resnet imagenet](https://github.com/pytorch/examples/tree/master/imagenet) and [wide resnet imagenet64x64](https://github.com/meliketoy/wide-resnet.pytorch)
 
