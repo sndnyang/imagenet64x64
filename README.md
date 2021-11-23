@@ -47,11 +47,11 @@ TITAN RTX, imagenet32
 | resnet 50            | 1717MiB | 90    |    03:52      | 21.57it/s | 6:09:35    | 38.056 | 62.386 |
 | WRN-28-2,drop 0      | 2601MiB | 40    |    05:17      | 15.78it/s | 3:49:15    | 46.606 | 71.806 |
 
-Use the default epochs from [resnet imagenet](https://github.com/pytorch/examples/tree/master/imagenet) and [wide resnet imagenet64x64](https://github.com/meliketoy/wide-resnet.pytorch)
+Use the default epochs from [resnet imagenet](https://github.com/pytorch/examples/tree/master/imagenet) and [wide resnet imagenet64x64](https://github.com/meliketoy/wide-resnet.pytorch).  I found it's is much faster than the authors reported in their paper.
 
 ### Wide ResNet
 
-The model is from [wide resnet](https://github.com/meliketoy/wide-resnet.pytorch) which gets more stars than the official repo. When will the PyTorch team add WideResNet into torchvision.models?
+The model is from [wide resnet](https://github.com/meliketoy/wide-resnet.pytorch) which gets more stars than the official repo. 
 
 And I changed it a bit following the implementation of the imagenet64x64 authors [WRN imagenet](https://github.com/PatrykChrabaszcz/Imagenet32_Scripts/blob/master/WRNs_imagenet.py)
 
@@ -66,5 +66,5 @@ numpy
 imageio
 ```
 
-The main functions if from the authors. [load batch data](https://github.com/PatrykChrabaszcz/Imagenet32_Scripts/blob/master/WRNs_imagenet.py)
+The main function is from the authors' code [load batch data](https://github.com/PatrykChrabaszcz/Imagenet32_Scripts/blob/master/WRNs_imagenet.py)
 
