@@ -49,6 +49,14 @@ TITAN RTX, imagenet32
 
 Use the default epochs from [resnet imagenet](https://github.com/pytorch/examples/tree/master/imagenet) and [wide resnet imagenet64x64](https://github.com/meliketoy/wide-resnet.pytorch).  I found it's is much faster than the authors reported in their paper.
 
+### Training Curves
+
+ImageNet32, WRN-28-2-drop0
+
+![WeChat Image_20211123215246](https://user-images.githubusercontent.com/2310591/143163104-f954d468-18c5-49ef-bdc7-0fd1a0c42b6a.png)
+![WeChat Image_20211123215309](https://user-images.githubusercontent.com/2310591/143163106-e148f1ce-198c-4517-8743-1572082784c5.png)
+![WeChat Image_20211123215319](https://user-images.githubusercontent.com/2310591/143163113-57ce2b8d-9169-43c3-9b58-e0af5df93d46.png)
+
 ### Wide ResNet
 
 The model is from [wide resnet](https://github.com/meliketoy/wide-resnet.pytorch) which gets more stars than the official repo. 
