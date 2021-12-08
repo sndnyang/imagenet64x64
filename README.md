@@ -57,6 +57,14 @@ ImageNet32, WRN-28-2-drop0
 ![WeChat Image_20211123215309](https://user-images.githubusercontent.com/2310591/143163106-e148f1ce-198c-4517-8743-1572082784c5.png)
 ![WeChat Image_20211123215319](https://user-images.githubusercontent.com/2310591/143163113-57ce2b8d-9169-43c3-9b58-e0af5df93d46.png)
 
+
+ImageNet32 resnet 50
+
+![WeChat Image_20211208092854](https://user-images.githubusercontent.com/2310591/145225652-0fb5f1df-acbf-4e19-9b6c-bac9df863eb4.png)
+![WeChat Image_20211208092844](https://user-images.githubusercontent.com/2310591/145225691-5346ae81-bab5-4e58-a745-d18853b55e85.png)
+![WeChat Image_20211208092904](https://user-images.githubusercontent.com/2310591/145225699-103acc05-7f1d-4bd9-ae9b-e43b72cce17e.png)
+
+
 ### Wide ResNet
 
 The model is from [wide resnet](https://github.com/meliketoy/wide-resnet.pytorch) which gets more stars than the official repo. 
