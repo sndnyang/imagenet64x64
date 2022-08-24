@@ -10,11 +10,24 @@ So I decompress the set of 64x64 into png files like the *imagenet*, and we can 
 
 ### The link to the dataset
 
-[imagenet64 baidu](https://pan.baidu.com/s/1zjDMT14st8Ih4fqpIGbgXw)
+[imagenet64 baidu](https://pan.baidu.com/s/1zjDMT14st8Ih4fqpIGbgXw)    notoriously  Slow
 
-or
+But my suggestion is to download from the official website then decompress by yourself using the code 
 
-[google drive](https://drive.google.com/file/d/1GpGEiuBjQ-pDKdXpfimfHAHT316xkLHc/view?usp=sharing)
+
+## Decompress code
+
+I also upload the ipynb code about how to load the batch data and save to images.
+
+上传了notebook代码， 32x32, 16x16的数据就不弄了。
+
+```
+numpy
+imageio
+```
+
+The main function is from the authors' code [load batch data](https://github.com/PatrykChrabaszcz/Imagenet32_Scripts/blob/master/WRNs_imagenet.py)
+
 
 ## The training code
 
@@ -70,17 +83,3 @@ ImageNet32 resnet 50
 The model is from [wide resnet](https://github.com/meliketoy/wide-resnet.pytorch) which gets more stars than the official repo. 
 
 And I changed it a bit following the implementation of the imagenet64x64 authors [WRN imagenet](https://github.com/PatrykChrabaszcz/Imagenet32_Scripts/blob/master/WRNs_imagenet.py)
-
-## Decompress code
-
-I also upload the ipynb code about how to load the batch data and save to images.
-
-上传了notebook代码， 32x32, 16x16的数据就不弄了。
-
-```
-numpy
-imageio
-```
-
-The main function is from the authors' code [load batch data](https://github.com/PatrykChrabaszcz/Imagenet32_Scripts/blob/master/WRNs_imagenet.py)
-
